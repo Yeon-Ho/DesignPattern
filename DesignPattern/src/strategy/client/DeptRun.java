@@ -9,10 +9,8 @@ import strategy.library.vo.Dept;
 public class DeptRun {
 	public static void main(String[] args) {
 
-		ConnectionMaker pclassConnectionMaker = new ClientConnectionMaker();
 		
-		
-		DeptDao deptDao = new DeptDao(pclassConnectionMaker);
+		DeptDao deptDao = new DaoFactory().createDeptDao();
 		Dept dept  = new Dept();
 		
 		Scanner sc = new Scanner(System.in);
