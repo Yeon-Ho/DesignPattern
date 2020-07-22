@@ -1,4 +1,6 @@
-package none.library.dao;
+package templateMethod.libraray.dao;
+
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,25 +8,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import none.library.vo.Dept;
+import templateMethod.libraray.vo.Dept;
 
-
-public class DeptDao {
+public abstract class DeptDao {
 	
-	public Connection getConnection() {
-		
-		Connection conn = null;
-		
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","scott","tiger");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return conn;
-	}
+	//부모클래스에서 기본적인 로직의 흐름을 만들고
+	// 그 기능의 일부를 추상메소드로 만들어
+	//자식클래스에서 기능을 변경할 수 있도록 하는 패턴
+	
+	public abstract Connection getConnection();
 	
 
 	public void insertDept(Dept dept) {

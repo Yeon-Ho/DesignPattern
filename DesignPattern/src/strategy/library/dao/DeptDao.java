@@ -1,29 +1,23 @@
-package none.library.dao;
+package strategy.library.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import none.library.vo.Dept;
-
+import strategy.library.vo.Dept;
 
 public class DeptDao {
+
+	//strategy 패턴
+	// context + strategy
+	// 전체적인 맥락이 구현되어 있는 상황에서
+	// 상황에 맞게 전략을 바꿔서 사용하는 패턴
+			
+	ConnectionMaker connectionMaker;
 	
-	public Connection getConnection() {
-		
-		Connection conn = null;
-		
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","scott","tiger");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return conn;
+	public DeptDao(ConnectionMaker connectionMaker) {
+		this.connectionMaker = connectionMaker;
 	}
 	
 
@@ -33,7 +27,7 @@ public class DeptDao {
 		PreparedStatement ps = null;
 		
 		try {
-			conn = getConnection();
+			conn = connectionMaker.getConnection();
 			ps = conn.prepareStatement("INSERT INTO dept(deptno , dname , loc) VALUES(? ,? ,?) ");
 			
 			
@@ -64,7 +58,7 @@ public class DeptDao {
 		Dept dept = null;
 		
 		try {
-			conn = getConnection();
+			conn = connectionMaker.getConnection();
 			ps = conn.prepareStatement("SELECT * FROM dept where deptno = ? ORDER BY deptno");
 			
 			ps.setInt(1, deptno);
